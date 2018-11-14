@@ -114,6 +114,8 @@ namespace BlazorChatSample.Client
                 var tmp = await JSRuntime.Current.InvokeAsync<object>("ChatClient.Start", _key, HUBURL, assembly, method);
                 Console.WriteLine("ChatClient: Start returned");
                 _started = true;
+
+                await Send($"{_username} joined the chat room");
             }
         }
 
@@ -156,6 +158,8 @@ namespace BlazorChatSample.Client
         {
             if (_started)
             {
+                // say goodbye
+                await Send($"{_username} has left the chat");
                 // disconnect the client
                 await JSRuntime.Current.InvokeAsync<object>("ChatClient.Stop", _key);
                 _started = false;
